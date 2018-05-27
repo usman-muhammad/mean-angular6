@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { celebrate } = require('celebrate')
+const passport = require('passport')
 
 const requestValidation = require('./../utils/requestValidationSchemas')
 const logger = require('./../utils/logger')
@@ -12,11 +13,8 @@ const userCtrl = require('./../controllers/userCtrl')
 //   stripUnknown: true // remove unknown keys from the validated data
 // }
 
-/* GET users listing. */
-router.get('/', (req, res, next) => {
-  res.send('respond with a resource')
-})
 router.post('/register', logger.requestLog, celebrate(requestValidation.userRegister), userCtrl.register)
 router.post('/login', logger.requestLog, celebrate(requestValidation.userLogin), userCtrl.login)
+router.get('/profile', logger.requestLog, celebrate(requestValidation.userLogin), passport.authenticate('jwt', {session: false}), userCtrl.profile)
 
 module.exports = router

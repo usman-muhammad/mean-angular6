@@ -17,6 +17,7 @@ logger.stream = {
 
 logger.requestLog = (req, res, next) => {
   logger.info('requestUrl : ', req.originalUrl)
+  logger.info('requetHeader : ', req.headers)
   logger.debug('request Body : ', req.body)
   next()
 }
