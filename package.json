@@ -1,7 +1,7 @@
 {
   "name": "mean-angular6",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is angular6 MEAN stack app",
   "main": "app.js",
   "scripts": {
     "lint-fix": "standard --fix app.js app/routes/* app/models/* app/config/* app/auth/* app/controllers/* app/utils/*",
