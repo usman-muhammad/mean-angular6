@@ -40,8 +40,8 @@ UserSchema.pre('save', function (next) {
   }
 })
 
-UserSchema.methods.comparePassword = (passw, cb) => {
-  bcrypt.compare(passw, this.password, (err, isMatch) => {
+UserSchema.methods.comparePassword = function (passw, cb) {
+  bcrypt.compare(passw, this.password, (err, isMatch)=> {
     if (err) {
       return cb(err)
     }
@@ -55,6 +55,18 @@ module.exports.addUser = (newUser) => {
   return new Promise(async (resolve, reject) => {
     try {
       const user = await newUser.save()
+      resolve(user)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
+module.exports.getUserByNameOrEmail = (nameOrEmail) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let query = { $or: [{ username: nameOrEmail }, { email: nameOrEmail }] }
+      const user = await User.findOne(query)
       resolve(user)
     } catch (err) {
       reject(err)

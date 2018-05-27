@@ -1,6 +1,4 @@
 const express = require('express')
-const passport = require('passport')
-require('../auth/passport')(passport)
 const router = express.Router()
 const { celebrate } = require('celebrate')
 
@@ -19,8 +17,6 @@ router.get('/', (req, res, next) => {
   res.send('respond with a resource')
 })
 router.post('/register', logger.requestLog, celebrate(requestValidation.userRegister), userCtrl.register)
-router.post('/signin', logger.requestLog, celebrate(requestValidation.userSignin), (req, res, next) => {
-  res.send('respond with a resource')
-})
+router.post('/login', logger.requestLog, celebrate(requestValidation.userLogin), userCtrl.login)
 
 module.exports = router
