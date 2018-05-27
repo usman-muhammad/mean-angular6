@@ -57,6 +57,9 @@ app.use(async (err, req, res, next) => {
   res.status(err.status || 500)
   res.render('error')
 })
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/index.html'));
+  });
 app.use(errors())
 
 module.exports = app
