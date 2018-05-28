@@ -12,6 +12,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 
+//Services
+import { ValidateService } form './Services/Validate.service'
+
 const appRoutes:Routes = [
   { path : '', component: HomeComponent },
   { path : 'login', component: LoginComponent },
@@ -36,7 +39,7 @@ const appRoutes:Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [ValidateService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
