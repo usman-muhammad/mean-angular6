@@ -12,8 +12,12 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 
-//Services
-import { ValidateService } form './Services/Validate.service'
+//Custom Services
+import { ValidateService } from './services/validate.service'
+import { FlashMessagesModule } from 'angular2-flash-messages';
+import { FlashMessagesService } from 'angular2-flash-messages';
+
+
 
 const appRoutes:Routes = [
   { path : '', component: HomeComponent },
@@ -37,9 +41,10 @@ const appRoutes:Routes = [
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    FlashMessagesModule
   ],
-  providers: [ValidateService],
+  providers: [ValidateService,FlashMessagesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
