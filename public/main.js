@@ -317,7 +317,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  login works!\n</p>\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-md-12 mx-auto\">\n    <div class=\"card border-secondary\">\n      <div class=\"card-header\">\n        <h3 class=\"text-center\">Sign in</h3>\n      </div>\n      <div class=\"card-body\">\n        <form class=\"form\" role=\"form\" autocomplete=\"off\" (submit)=\"onLoginSubmit()\">\n          <div class=\"form-group\">\n            <label>User Name</label>\n            <input type=\"text\" class=\"form-control\" [(ngModel)]=\"username\" name=\"username\"  placeholder=\"user name\">\n          </div>\n          <div class=\"form-group\">\n            <label>Password</label>\n            <input type=\"password\" class=\"form-control\" [(ngModel)]=\"password\" name=\"password\"  placeholder=\"password\" title=\"At least 6 characters with letters and numbers\" required=\"\">\n          </div>\n          <div class=\"form-group\">\n            <button type=\"submit\" class=\"btn btn-success btn-lg float-right\">Login</button>\n          </div>\n        </form>\n      </div>\n    </div>\n  </div>\n</div>\n<!--/row-->\n"
 
 /***/ }),
 
@@ -332,6 +332,11 @@ module.exports = "<p>\n  login works!\n</p>\n"
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginComponent", function() { return LoginComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../services/auth.service */ "./src/app/services/auth.service.ts");
+/* harmony import */ var _services_validate_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../services/validate.service */ "./src/app/services/validate.service.ts");
+/* harmony import */ var angular2_flash_messages__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-flash-messages */ "./node_modules/angular2-flash-messages/module/index.js");
+/* harmony import */ var angular2_flash_messages__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_flash_messages__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -342,10 +347,43 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
+
 var LoginComponent = /** @class */ (function () {
-    function LoginComponent() {
+    function LoginComponent(validateService, flashMessage, authService, router) {
+        this.validateService = validateService;
+        this.flashMessage = flashMessage;
+        this.authService = authService;
+        this.router = router;
     }
     LoginComponent.prototype.ngOnInit = function () {
+    };
+    //Login submit
+    LoginComponent.prototype.onLoginSubmit = function () {
+        var _this = this;
+        var user = {
+            username: this.username,
+            password: this.password
+        };
+        // validate user object
+        if (!this.validateService.ValidateLogin(user)) {
+            this.flashMessage.show('Please fill all fields', { cssClass: 'alert alert-danger', timeout: 3000 });
+            return false;
+        }
+        // Register user
+        this.authService.LoginUser(user).subscribe(function (data) {
+            if (data.success) {
+                _this.flashMessage.show(data.message, { cssClass: 'alert alert-success', timeout: 3000 });
+                _this.authService.StoreUserData(data.token, data.user);
+                _this.router.navigate(['dashboard']);
+            }
+            else {
+                _this.flashMessage.show(data.message, { cssClass: 'alert alert-danger', timeout: 3000 });
+                _this.router.navigate(['/login']);
+            }
+        });
     };
     LoginComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -353,7 +391,10 @@ var LoginComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./login.component.html */ "./src/app/components/login/login.component.html"),
             styles: [__webpack_require__(/*! ./login.component.css */ "./src/app/components/login/login.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_services_validate_service__WEBPACK_IMPORTED_MODULE_2__["ValidateService"],
+            angular2_flash_messages__WEBPACK_IMPORTED_MODULE_3__["FlashMessagesService"],
+            _services_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]])
     ], LoginComponent);
     return LoginComponent;
 }());
@@ -380,7 +421,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-md navbar-dark bg-dark\">\n  <a class=\"navbar-brand\" href=\"#\">MEAN(A6) AUTH APP</a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\".dual-collapse\" aria-controls=\"navbarNav\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"navbar-collapse collapse dual-collapse\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item\" [routerLinkActive]=\"['active']\">\n          <a class=\"nav-link\" [routerLink]=\"['/']\" >Home <span class=\"sr-only\">(current)</span></a>\n      </li>\n    </ul>\n  </div>\n  <div class=\"navbar-collapse collapse dual-collapse\">\n    <ul class=\"navbar-nav ml-auto\">\n      <li class=\"nav-item\"  [routerLinkActive]=\"['active']\">\n          <a class=\"nav-link\"  [routerLink]=\"['/register']\">Register</a>\n      </li>\n      <li class=\"nav-item\" [routerLinkActive]=\"['active']\">\n          <a class=\"nav-link\"  [routerLink]=\"['/login']\">Login</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n"
+module.exports = "<nav class=\"navbar navbar-expand-md navbar-dark bg-dark\">\n  <a class=\"navbar-brand\" href=\"#\">MEAN(A6) AUTH APP</a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\".dual-collapse\" aria-controls=\"navbarNav\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"navbar-collapse collapse dual-collapse\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item\" [routerLinkActive]=\"['active']\">\n          <a class=\"nav-link\" [routerLink]=\"['/']\" >Home <span class=\"sr-only\">(current)</span></a>\n      </li>\n    </ul>\n  </div>\n  <div class=\"navbar-collapse collapse dual-collapse\">\n    <ul class=\"navbar-nav ml-auto\">\n      <li class=\"nav-item\"  [routerLinkActive]=\"['active']\">\n          <a class=\"nav-link\"  [routerLink]=\"['/register']\">Register</a>\n      </li>\n      <li class=\"nav-item\" [routerLinkActive]=\"['active']\">\n          <a class=\"nav-link\"  [routerLink]=\"['/login']\">Login</a>\n      </li>\n      <li class=\"nav-item\">\n          <a class=\"nav-link\" (click)=\"onLogoutClick()\"  href=\"#\">Logout</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n"
 
 /***/ }),
 
@@ -395,6 +436,10 @@ module.exports = "<nav class=\"navbar navbar-expand-md navbar-dark bg-dark\">\n 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NavbarComponent", function() { return NavbarComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../services/auth.service */ "./src/app/services/auth.service.ts");
+/* harmony import */ var angular2_flash_messages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angular2-flash-messages */ "./node_modules/angular2-flash-messages/module/index.js");
+/* harmony import */ var angular2_flash_messages__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angular2_flash_messages__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -405,10 +450,21 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
 var NavbarComponent = /** @class */ (function () {
-    function NavbarComponent() {
+    function NavbarComponent(flashMessage, authService, router) {
+        this.flashMessage = flashMessage;
+        this.authService = authService;
+        this.router = router;
     }
     NavbarComponent.prototype.ngOnInit = function () {
+    };
+    NavbarComponent.prototype.onLogoutClick = function () {
+        this.authService.Logout();
+        this.flashMessage.show('You have logout successfully', { cssClass: 'alert-success', timeout: 3000 });
+        this.router.navigate(['/login']);
     };
     NavbarComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -416,7 +472,9 @@ var NavbarComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./navbar.component.html */ "./src/app/components/navbar/navbar.component.html"),
             styles: [__webpack_require__(/*! ./navbar.component.css */ "./src/app/components/navbar/navbar.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [angular2_flash_messages__WEBPACK_IMPORTED_MODULE_2__["FlashMessagesService"],
+            _services_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
     ], NavbarComponent);
     return NavbarComponent;
 }());
@@ -692,10 +750,28 @@ var AuthService = /** @class */ (function () {
     }
     // Register AuthService
     AuthService.prototype.RegisterUser = function (user) {
-        console.log('');
         var headers = new _angular_http__WEBPACK_IMPORTED_MODULE_1__["Headers"]();
         headers.append('Content-Type', 'application/json');
         return this.http.post('http://localhost:3000/api/v1/users/register', user, { headers: headers }).map(function (res) { return res.json(); });
+    };
+    // LoginUser AuthService
+    AuthService.prototype.LoginUser = function (user) {
+        var headers = new _angular_http__WEBPACK_IMPORTED_MODULE_1__["Headers"]();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post('http://localhost:3000/api/v1/users/login', user, { headers: headers }).map(function (res) { return res.json(); });
+    };
+    // Store user data in local storage
+    AuthService.prototype.StoreUserData = function (token, user) {
+        localStorage.setItem('id_token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+        this.authToken = token;
+        this.user = user;
+    };
+    //Logout user 
+    AuthService.prototype.Logout = function () {
+        this.authToken = null;
+        this.user = null;
+        localStorage.clear();
     };
     AuthService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
@@ -746,6 +822,15 @@ var ValidateService = /** @class */ (function () {
     ValidateService.prototype.ValidateEmail = function (email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
+    };
+    // Validate login user
+    ValidateService.prototype.ValidateLogin = function (user) {
+        if (user.username === undefined || user.password === undefined) {
+            return false;
+        }
+        else {
+            return true;
+        }
     };
     ValidateService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
