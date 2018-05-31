@@ -26,9 +26,9 @@ module.exports = {
             expiresIn: 604800 // 1 week
           })
           user = { _id: user._id, name: user.name, email: user.email, username: user.username }
-          return res.json({ success: true, msg: 'Login Successfully...!!!', token: 'JWT ' + token, user: user })
+          return res.json({ success: true, message: 'Login Successfully...!!!', token: 'JWT ' + token, user: user })
         } else {
-          return res.json({ success: false, msg: 'Authentication failed. Wrong password...!!!' })
+          return res.json({ success: false, message: 'Authentication failed. Wrong password...!!!' })
         }
       })
     } catch (err) {

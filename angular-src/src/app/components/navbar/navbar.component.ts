@@ -12,7 +12,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private flashMessage: FlashMessagesService,
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router
   ) { }
 
