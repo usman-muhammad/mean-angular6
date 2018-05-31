@@ -32,19 +32,19 @@ export class RegisterComponent implements OnInit {
     }
 
     // validate user object
-    if( !this.validateService.ValidateRegister(user)) {
+    if( !this.validateService.validateRegister(user)) {
       this.flashMessage.show('Please fill all fields', { cssClass:'alert alert-danger alert-dismissible fade show', timeout: 3000 });
       return false;
     }
 
     // Validate Email
-    if(!this.validateService.ValidateEmail(user.email)) {
+    if(!this.validateService.validateEmail(user.email)) {
         this.flashMessage.show('Email should be a valid email',{ cssClass:'alert alert-danger alert-dismissible fade show', timeout: 3000 })
       return false;
     }
 
     // Register user
-    this.authService.RegisterUser(user).subscribe(data => {
+    this.authService.registerUser(user).subscribe(data => {
       if(data.success) {
         this.flashMessage.show(data.message,{ cssClass:'alert alert-success', timeout: 3000 });
         this.router.navigate(['/login']);

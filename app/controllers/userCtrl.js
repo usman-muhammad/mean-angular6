@@ -22,7 +22,9 @@ module.exports = {
       if (!user) return res.json({ success: false, message: 'Authentication failed. User not found...!!!' })
       user.comparePassword(req.body.password, (err, isMatch) => {
         if (isMatch && !err) {
-          const token = jwt.sign(user.toJSON(), config.secret)
+          const token = jwt.sign(user.toJSON(), config.secret, {
+          expiresIn: 604800 // 1 week
+        })
           user = { _id: user._id, name: user.name, email: user.email, username: user.username }
           return res.json({ success: true, msg: 'Login Successfully...!!!', token: 'JWT ' + token, user: user })
         } else {
@@ -36,6 +38,6 @@ module.exports = {
   },
   profile: async (req, res) => {
     let user = { _id: req.user._id, name: req.user.name, email: req.user.email, username: req.user.username }
-    return res.json(user)
+    return res.json({ success: false, message: 'User detail ', user: user })
   }
 }

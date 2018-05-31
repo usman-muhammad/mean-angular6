@@ -30,20 +30,20 @@ export class LoginComponent implements OnInit {
     }
 
     // validate user object
-    if( !this.validateService.ValidateLogin(user)) {
+    if( !this.validateService.validateLogin(user)) {
       this.flashMessage.show('Please fill all fields', { cssClass:'alert alert-danger', timeout: 3000 });
       return false;
     }
 
     // Register user
-    this.authService.LoginUser(user).subscribe(data => {
+    this.authService.loginUser(user).subscribe(data => {
       if(data.success) {
         this.flashMessage.show(data.message,{ cssClass:'alert alert-success', timeout: 3000 });
-        this.authService.StoreUserData(data.token, data.user);
+        this.authService.storeUserData(data.token, data.user);
         this.router.navigate(['dashboard']);
       } else {
         this.flashMessage.show(data.message,{ cssClass:'alert alert-danger', timeout: 3000 });
-        this.router.navigate(['login']);
+        this.router.navigate(['/login']);
       }
     })
   }
