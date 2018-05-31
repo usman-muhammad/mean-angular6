@@ -17,6 +17,7 @@ import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 import { FlashMessagesService } from 'angular2-flash-messages';
+import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
 
 
 
@@ -25,7 +26,8 @@ const appRoutes:Routes = [
   { path : 'login', component: LoginComponent },
   { path : 'register', component: RegisterComponent },
   { path : 'dashboard', component: DashboardComponent },
-  { path : 'profile', component: ProfileComponent }
+  { path : 'profile', component: ProfileComponent },
+  { path: '**', component: PagenotfoundComponent }
 ]
 
 @NgModule({
@@ -36,7 +38,8 @@ const appRoutes:Routes = [
     RegisterComponent,
     DashboardComponent,
     HomeComponent,
-    ProfileComponent
+    ProfileComponent,
+    PagenotfoundComponent
   ],
   imports: [
     BrowserModule,

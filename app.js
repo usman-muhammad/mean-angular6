@@ -14,8 +14,9 @@ const logger = require('./app/utils/logger')
 const app = express()
 app.use(cors())
 // view engine setup
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'jade')
+// View engine
+app.set('view engine', 'html');
+app.set('views', 'public');
 
 app.use(passport.initialize())
 app.use(passport.session())
@@ -25,21 +26,22 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(bodyParser.json())
-app.use(express.static(path.join(__dirname, 'public')))
+// app.use(express.static(path.join(__dirname, 'public')))
 
 mongoose.Promise = require('bluebird')
 mongoose.connect(config.database, { promiseLibrary: require('bluebird') })
   .then(async () => {
     console.log('connect to db')
     const joiPrettyErrorsMessages = require('./app/utils/joiPrettyErrorsMessages')
-    const indexRouter = require('./app/routes/index')
+    const angularRouter = require('./app/routes/angular')
     const usersRouter = require('./app/routes/users')
 
-    app.use('/', indexRouter)
+    app.use('/', angularRouter)
     app.use('/api/v1/users', usersRouter)
 
     // catch 404 and forward to error handler
     app.use((req, res, next) => {
+      console.log('404 Errors');
       next(createError(404))
     })
     // error handler
@@ -53,11 +55,12 @@ mongoose.connect(config.database, { promiseLibrary: require('bluebird') })
       }
       // render the error page
       res.status(err.status || 500)
+      console.log(res.status);
       res.render('error')
     })
     app.use(errors())
   }).catch((err) => console.error(err))
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/index.html'))
-})
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public/index.html'))
+// })
 module.exports = app
