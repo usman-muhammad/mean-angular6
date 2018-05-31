@@ -13,20 +13,20 @@ export class AuthService {
 
   // Register AuthService
   registerUser(user) {
-    let headers = new Headers();
+    const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     return this.http.post('http://localhost:3000/api/v1/users/register', user, { headers: headers }).map(res => res.json());
   }
 
   // LoginUser AuthService
   loginUser(user) {
-  let headers = new Headers();
+  const headers = new Headers();
   headers.append('Content-Type', 'application/json');
   return this.http.post('http://localhost:3000/api/v1/users/login', user, { headers: headers }).map(res => res.json());
   }
   // getProfile
   getProfile() {
-  let headers = new Headers();
+  const headers = new Headers();
   this.loadToken();
   headers.append('Authorization', this.authToken);
   headers.append('Content-Type', 'application/json');

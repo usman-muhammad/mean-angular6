@@ -1,6 +1,5 @@
 const createError = require('http-errors')
 const express = require('express')
-const path = require('path')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const passport = require('passport')
@@ -15,8 +14,8 @@ const app = express()
 app.use(cors())
 // view engine setup
 // View engine
-app.set('view engine', 'html');
-app.set('views', 'public');
+app.set('view engine', 'html')
+app.set('views', 'public')
 
 app.use(passport.initialize())
 app.use(passport.session())
@@ -41,7 +40,7 @@ mongoose.connect(config.database, { promiseLibrary: require('bluebird') })
 
     // catch 404 and forward to error handler
     app.use((req, res, next) => {
-      console.log('404 Errors');
+      console.log('404 Errors')
       next(createError(404))
     })
     // error handler
@@ -55,7 +54,7 @@ mongoose.connect(config.database, { promiseLibrary: require('bluebird') })
       }
       // render the error page
       res.status(err.status || 500)
-      console.log(res.status);
+      console.log(res.status)
       res.render('error')
     })
     app.use(errors())
